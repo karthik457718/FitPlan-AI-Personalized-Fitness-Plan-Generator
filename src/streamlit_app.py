@@ -1,6 +1,4 @@
 import streamlit as st
-from streamlit_lottie import st_lottie
-import requests
 
 st.set_page_config(
     page_title="AI Fitness Planner",
@@ -8,79 +6,66 @@ st.set_page_config(
     layout="wide"
 )
 
-def load_lottieurl(url: str):
-    r = requests.get(url)
-    if r.status_code != 200:
-        return None
-    return r.json()
-
-lottie_fitness = load_lottieurl(
-    "https://assets9.lottiefiles.com/packages/lf20_tutvdkg0.json"
-)
-
 st.markdown("""
 <style>
-body {
-    background: linear-gradient(-45deg, #6a11cb, #2575fc, #00c6ff, #f7971e);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
+
+/* Full Animated Gradient */
+[data-testid="stAppViewContainer"] {
+    background: linear-gradient(135deg, 
+        #667eea 0%, 
+        #764ba2 25%, 
+        #6B73FF 50%, 
+        #000DFF 75%, 
+        #667eea 100%);
+    background-size: 300% 300%;
+    animation: gradientMove 12s ease infinite;
 }
 
-@keyframes gradientBG {
+@keyframes gradientMove {
     0% {background-position: 0% 50%;}
     50% {background-position: 100% 50%;}
     100% {background-position: 0% 50%;}
 }
 
-.main {
-    background: rgba(255, 255, 255, 0.85);
-    padding: 30px;
-    border-radius: 25px;
-    backdrop-filter: blur(10px);
+/* Glass Container */
+.block-container {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 2rem;
 }
 
-.floating {
-    position: fixed;
-    font-size: 40px;
-    animation: float 6s ease-in-out infinite;
-    opacity: 0.12;
+/* Remove header background */
+[data-testid="stHeader"] {
+    background: transparent;
 }
 
-@keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-25px); }
-    100% { transform: translateY(0px); }
+/* White Text */
+h1, h2, h3, label, p {
+    color: white !important;
 }
 
-.icon1 { top: 10%; left: 5%; }
-.icon2 { top: 60%; right: 8%; animation-delay: 2s; }
-.icon3 { bottom: 10%; left: 40%; animation-delay: 4s; }
-
-.card {
-    padding: 20px;
-    border-radius: 18px;
-    background: white;
-    box-shadow: 0px 10px 25px rgba(0,0,0,0.08);
-    margin-bottom: 15px;
-    font-weight: 500;
-    font-size: 17px;
+/* Inputs */
+.stSelectbox > div > div,
+.stMultiSelect > div > div {
+    background: rgba(255,255,255,0.2) !important;
+    color: white !important;
+    border-radius: 10px;
 }
 
-.stButton>button {
-    background: linear-gradient(90deg, #6a11cb, #2575fc);
+/* Button */
+.stButton > button {
+    background: linear-gradient(90deg, #ff512f, #dd2476);
     color: white;
     border-radius: 12px;
-    padding: 12px 30px;
+    padding: 12px 28px;
     border: none;
     font-weight: 600;
-    font-size: 16px;
 }
-</style>
 
-<div class="floating icon1">🏋️</div>
-<div class="floating icon2">💪</div>
-<div class="floating icon3">🔥</div>
+</style>
 """, unsafe_allow_html=True)
+
 
 col1, col2 = st.columns([2, 1])
 
@@ -90,8 +75,18 @@ with col1:
     st.markdown("---")
 
 with col2:
-    if lottie_fitness:
-        st_lottie(lottie_fitness, height=250)
+    st.components.v1.html("""
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <lottie-player 
+        src="https://assets9.lottiefiles.com/packages/lf20_tutvdkg0.json"
+        background="transparent"
+        speed="1"
+        style="width: 280px; height: 280px;"
+        loop
+        autoplay>
+    </lottie-player>
+    """, height=280)
+
 
 st.subheader("🎯 Customize Your Plan")
 
@@ -123,6 +118,7 @@ equipment = st.multiselect(
 )
 
 st.markdown("---")
+
 
 def generate_workout(goal, level):
 
@@ -173,12 +169,22 @@ def generate_workout(goal, level):
 
     return workout
 
+
 if st.button("Generate Workout Plan 🚀"):
 
     st.subheader("🏆 Your Personalized Plan")
     plan = generate_workout(goal, level)
 
     for exercise in plan:
-        st.markdown(f'<div class="card">✅ {exercise}</div>', unsafe_allow_html=True)
+        st.markdown(f"""
+        <div style="
+            padding:15px;
+            margin-bottom:10px;
+            background:rgba(255,255,255,0.15);
+            border-radius:12px;
+            color:white;">
+            ✅ {exercise}
+        </div>
+        """, unsafe_allow_html=True)
 
     st.success("Stay consistent. Results will follow! 💯🔥")
