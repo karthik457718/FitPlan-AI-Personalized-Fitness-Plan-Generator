@@ -3,6 +3,7 @@ import time
 
 st.set_page_config(page_title="FitPlan AI Ultra", page_icon="💎", layout="wide")
 
+# ================== CSS ==================
 st.markdown("""
 <style>
 
@@ -13,40 +14,21 @@ html, body, [class*="css"] {
     font-family: 'Orbitron', sans-serif;
 }
 
-/* ===== CINEMATIC BACKGROUND ===== */
+/* ===== BACKGROUND ===== */
 [data-testid="stAppViewContainer"] {
     background:
-        linear-gradient(rgba(5,5,20,0.85), rgba(5,5,20,0.85)),
+        linear-gradient(rgba(5,5,20,0.88), rgba(5,5,20,0.88)),
         url("https://images.unsplash.com/photo-1599058917765-a780eda07a3e");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
 }
 
-/* ===== FLOATING PARTICLES ===== */
-body::before {
-    content: "";
-    position: fixed;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,0,200,0.1) 2px, transparent 2px);
-    background-size: 70px 70px;
-    animation: moveParticles 100s linear infinite;
-    z-index: 0;
-}
-
-@keyframes moveParticles {
-    from { transform: translate(0,0); }
-    to { transform: translate(-400px,-400px); }
-}
-
-/* ===== CENTER LAYOUT ===== */
+/* ===== CENTER ===== */
 .block-container {
     max-width: 850px;
     margin: auto;
     padding-top: 70px;
-    position: relative;
-    z-index: 1;
 }
 
 /* ===== TEXT ===== */
@@ -56,35 +38,58 @@ h1, h2, h3, h4, p, label {
 
 h1 {
     text-align: center;
-    font-size: 44px !important;
+    font-size: 42px !important;
     letter-spacing: 2px;
 }
 
-/* ===== GLASS INPUTS ===== */
-div[data-baseweb="input"] {
+/* ===== REMOVE WHITE INPUTS ===== */
+input, textarea {
+    background-color: transparent !important;
+    color: white !important;
+}
+
+div[data-baseweb="base-input"] {
     background: rgba(255,255,255,0.08) !important;
     border-radius: 40px !important;
     border: 1px solid rgba(255,255,255,0.35) !important;
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(20px) !important;
 }
 
-div[data-baseweb="input"] input {
+div[data-baseweb="input"] {
+    background: transparent !important;
+}
+
+input[type="text"],
+input[type="number"] {
     background: transparent !important;
     color: white !important;
-    border: none !important;
+    box-shadow: none !important;
 }
 
-/* ===== GLASS SELECT ===== */
+/* Autofill fix */
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+    -webkit-text-fill-color: white !important;
+}
+
+/* Remove white number area */
+button[aria-label="Increase value"],
+button[aria-label="Decrease value"] {
+    background: transparent !important;
+    color: white !important;
+}
+
+/* ===== SELECT GLASS ===== */
 .stSelectbox > div > div,
 .stMultiSelect > div > div {
     background: rgba(255,255,255,0.08) !important;
     border-radius: 40px !important;
     border: 1px solid rgba(255,255,255,0.35) !important;
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(20px) !important;
     color: white !important;
 }
 
-/* ===== NEON HOVER BUTTON ===== */
+/* ===== NEON BUTTON ===== */
 .stButton > button {
     background: rgba(255,255,255,0.08) !important;
     border-radius: 50px !important;
@@ -95,7 +100,6 @@ div[data-baseweb="input"] input {
     transition: all 0.3s ease !important;
 }
 
-/* HOVER EFFECT (WORKING VERSION) */
 .stButton > button:hover {
     background: linear-gradient(90deg, #ff00cc, #7928ca, #00f0ff) !important;
     background-size: 300% 300% !important;
@@ -117,31 +121,34 @@ div[data-baseweb="input"] input {
 </style>
 """, unsafe_allow_html=True)
 
-# ===== HERO =====
+# ================== HERO ==================
 st.markdown("<h1>💎 FITPLAN AI ULTRA</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align:center;'>FUTURISTIC FITNESS INTELLIGENCE</p>", unsafe_allow_html=True)
 
-# ===== FORM =====
+# ================== FORM ==================
 name = st.text_input("Full Name")
 height_cm = st.number_input("Height (cm)", min_value=0.0)
 weight_kg = st.number_input("Weight (kg)", min_value=0.0)
 
-goal = st.selectbox("Goal",
+goal = st.selectbox(
+    "Goal",
     ["Build Muscle", "Weight Loss", "Strength Gain", "Abs Building", "Flexible"]
 )
 
-level = st.selectbox("Level",
+level = st.selectbox(
+    "Level",
     ["Beginner", "Intermediate", "Advanced"]
 )
 
-equipment = st.multiselect("Equipment",
+equipment = st.multiselect(
+    "Equipment",
     ["Dumbbells", "Resistance Band", "Yoga Mat", "No Equipment",
      "Bench", "Treadmill", "Cycle", "Pullup Bar"]
 )
 
 generate = st.button("Generate Ultra Plan 🚀")
 
-# ===== BMI FUNCTIONS =====
+# ================== BMI ==================
 def calculate_bmi(height_cm, weight_kg):
     height_m = height_cm / 100
     return round(weight_kg / (height_m ** 2), 2)
@@ -156,14 +163,14 @@ def bmi_category(bmi):
     else:
         return "Obese"
 
-# ===== WORKOUT GENERATOR =====
+# ================== WORKOUT ==================
 def generate_workout(goal, level):
     plans = {
-        "Weight Loss": ["HIIT Sprint", "Burpees", "Mountain Climbers"],
-        "Build Muscle": ["Bench Press", "Squats", "Pullups"],
-        "Strength Gain": ["Deadlifts", "Heavy Pullups"],
-        "Abs Building": ["Planks", "Leg Raises"],
-        "Flexible": ["Yoga Flow", "Mobility Training"]
+        "Weight Loss": ["HIIT Sprint – 15 min", "Burpees – 3x15", "Mountain Climbers – 3x20"],
+        "Build Muscle": ["Bench Press – 4x10", "Squats – 4x12", "Pullups – 3x8"],
+        "Strength Gain": ["Deadlifts – 5x5", "Heavy Pullups – 4x6"],
+        "Abs Building": ["Planks – 3x60 sec", "Leg Raises – 3x15"],
+        "Flexible": ["Yoga Flow – 20 min", "Mobility Training – 15 min"]
     }
 
     workout = plans.get(goal, [])
@@ -175,7 +182,7 @@ def generate_workout(goal, level):
 
     return workout
 
-# ===== RESULTS =====
+# ================== RESULTS ==================
 if generate:
     if name.strip() == "" or height_cm <= 0 or weight_kg <= 0:
         st.error("Please complete all fields properly.")
@@ -183,6 +190,7 @@ if generate:
         bmi = calculate_bmi(height_cm, weight_kg)
         category = bmi_category(bmi)
 
+        st.markdown("---")
         st.subheader(f"👤 {name}")
         st.markdown(f"### BMI: {bmi}")
         st.markdown(f"### Category: {category}")
