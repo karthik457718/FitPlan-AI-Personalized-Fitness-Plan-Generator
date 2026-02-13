@@ -6,14 +6,14 @@ st.set_page_config(page_title="FitPlan AI Elite", page_icon="💎", layout="wide
 st.markdown("""
 <style>
 
-/* Modern Font */
+/* ===== GOOGLE FONT ===== */
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap');
 
 html, body, [class*="css"] {
     font-family: 'Outfit', sans-serif;
 }
 
-/* Cinematic Gym Background */
+/* ===== CINEMATIC GYM BACKGROUND ===== */
 [data-testid="stAppViewContainer"] {
     background:
         linear-gradient(rgba(10,10,20,0.75), rgba(10,10,20,0.75)),
@@ -23,7 +23,7 @@ html, body, [class*="css"] {
     background-attachment: fixed;
 }
 
-/* Floating particles */
+/* ===== FLOATING PARTICLES ===== */
 body::before {
     content: "";
     position: fixed;
@@ -40,7 +40,7 @@ body::before {
     to { transform: translate(-400px,-400px); }
 }
 
-/* Center Layout */
+/* ===== CENTER LAYOUT ===== */
 .block-container {
     max-width: 950px;
     margin: auto;
@@ -49,7 +49,50 @@ body::before {
     z-index: 1;
 }
 
-/* Glass Card */
+/* ===== HERO TITLE ===== */
+h1 {
+    text-align: center;
+    font-size: 52px !important;
+    font-weight: 700 !important;
+    color: white !important;
+}
+
+h2, h3, h4, p, label {
+    color: white !important;
+}
+
+/* ===== GLOW HERO BAR (3rd image style) ===== */
+.glow-bar {
+    height: 80px;
+    border-radius: 50px;
+    margin: 40px auto;
+    position: relative;
+    background: rgba(255,255,255,0.05);
+    width: 80%;
+}
+
+.glow-bar::before {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border-radius: 50px;
+    padding: 3px;
+    background: linear-gradient(90deg, #ff00cc, #7928ca, #00f0ff);
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    animation: glowMove 4s linear infinite;
+}
+
+@keyframes glowMove {
+    0% { background: linear-gradient(90deg, #ff00cc, #7928ca, #00f0ff); }
+    50% { background: linear-gradient(90deg, #00f0ff, #ff00cc, #7928ca); }
+    100% { background: linear-gradient(90deg, #ff00cc, #7928ca, #00f0ff); }
+}
+
+/* ===== GLASS CARD ===== */
 .glass {
     background: rgba(255,255,255,0.08);
     backdrop-filter: blur(35px);
@@ -60,24 +103,26 @@ body::before {
     margin-bottom: 35px;
 }
 
-/* Neon glow border on hover */
-.glass:hover {
-    box-shadow: 0 0 100px rgba(255,0,200,0.4);
-}
-
-/* Glassy Inputs */
+/* ===== GLASS INPUTS ===== */
 .stTextInput input,
 .stNumberInput input,
 .stSelectbox > div > div,
 .stMultiSelect > div > div {
-    background: rgba(255,255,255,0.12) !important;
-    border-radius: 25px !important;
-    border: 1px solid rgba(255,255,255,0.3) !important;
+    background: rgba(255,255,255,0.1) !important;
+    border-radius: 30px !important;
+    border: 1px solid rgba(255,255,255,0.35) !important;
     color: white !important;
-    padding: 14px !important;
+    padding: 16px !important;
+    backdrop-filter: blur(20px);
 }
 
-/* Glassy Button */
+/* Remove number input arrow background */
+.stNumberInput button {
+    background: transparent !important;
+    color: white !important;
+}
+
+/* ===== GLASS BUTTON ===== */
 .stButton > button {
     background: rgba(255,255,255,0.12);
     backdrop-filter: blur(20px);
@@ -95,26 +140,15 @@ body::before {
     transform: translateY(-3px);
 }
 
-h1 {
-    text-align: center;
-    font-size: 50px !important;
-    font-weight: 700 !important;
-    color: white !important;
-}
-
-h2, h3, h4, p, label {
-    color: white !important;
-}
-
 </style>
 """, unsafe_allow_html=True)
 
 # HERO
 st.markdown("<h1>💎 FitPlan AI Elite</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align:center;'>Train Smart. Perform Elite.</p>", unsafe_allow_html=True)
-st.markdown("<br>", unsafe_allow_html=True)
+st.markdown('<div class="glow-bar"></div>', unsafe_allow_html=True)
 
-# GLASS FORM CARD
+# FORM CARD
 st.markdown('<div class="glass">', unsafe_allow_html=True)
 
 name = st.text_input("Full Name")
@@ -138,7 +172,7 @@ generate = st.button("Generate Elite Plan 🚀")
 
 st.markdown('</div>', unsafe_allow_html=True)
 
-# LOGIC
+# BMI Logic
 def calculate_bmi(height_cm, weight_kg):
     height_m = height_cm / 100
     return round(weight_kg / (height_m ** 2), 2)
