@@ -13,10 +13,10 @@ html, body, [class*="css"] {
     font-family: 'Outfit', sans-serif;
 }
 
-/* ===== CINEMATIC GYM BACKGROUND ===== */
+/* ===== CINEMATIC GYM BACKGROUND (OPACITY REDUCED) ===== */
 [data-testid="stAppViewContainer"] {
     background:
-        linear-gradient(rgba(10,10,20,0.75), rgba(10,10,20,0.75)),
+        linear-gradient(rgba(10,10,20,0.45), rgba(10,10,20,0.45)),
         url("https://images.unsplash.com/photo-1599058917765-a780eda07a3e");
     background-size: cover;
     background-position: center;
