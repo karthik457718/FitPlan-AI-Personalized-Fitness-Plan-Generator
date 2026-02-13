@@ -1,114 +1,159 @@
 import streamlit as st
+import time
 
-st.set_page_config(page_title="FitPlan AI", page_icon="💪", layout="wide")
+st.set_page_config(page_title="FitPlan AI Elite", page_icon="💎", layout="wide")
 
-st.markdown("""
+# ------------------------------
+# THEME TOGGLE
+# ------------------------------
+theme = st.sidebar.toggle("🌙 Dark Mode", value=True)
+
+if theme:
+    overlay_color = "rgba(10,10,20,0.75)"
+else:
+    overlay_color = "rgba(255,255,255,0.65)"
+
+# ------------------------------
+# PREMIUM CSS
+# ------------------------------
+st.markdown(f"""
 <style>
 
-/* ===== Modern Font ===== */
+/* Google Font */
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap');
 
-html, body, [class*="css"] {
+html, body, [class*="css"] {{
     font-family: 'Outfit', sans-serif;
-}
+}}
 
-/* ===== Gym Background with Dark Transparent Overlay ===== */
-[data-testid="stAppViewContainer"] {
+/* Background with cinematic overlay */
+[data-testid="stAppViewContainer"] {{
     background:
-        linear-gradient(rgba(10,10,20,0.75), rgba(10,10,20,0.75)),
+        linear-gradient({overlay_color}, {overlay_color}),
         url("https://images.unsplash.com/photo-1599058917765-a780eda07a3e");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-}
+}}
 
-/* ===== Centered Container ===== */
-.block-container {
+/* Floating particles */
+body::before {{
+    content: "";
+    position: fixed;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,0,200,0.15) 2px, transparent 2px);
+    background-size: 60px 60px;
+    animation: moveParticles 60s linear infinite;
+    z-index: 0;
+}}
+
+@keyframes moveParticles {{
+    from {{ transform: translate(0,0); }}
+    to {{ transform: translate(-300px,-300px); }}
+}}
+
+/* Center Layout */
+.block-container {{
     max-width: 1150px;
     margin: auto;
     padding-top: 60px;
-}
+    position: relative;
+    z-index: 1;
+}}
 
-/* ===== Glass Card ===== */
-.glass {
+/* Glass */
+.glass {{
     background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(25px);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 28px;
-    padding: 40px;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.5);
-    margin-bottom: 35px;
-}
-
-/* ===== Result Premium Glow ===== */
-.result-glass {
-    background: linear-gradient(135deg, rgba(255,0,150,0.15), rgba(110,0,255,0.15));
     backdrop-filter: blur(30px);
-    border-radius: 28px;
+    border-radius: 30px;
     padding: 40px;
+    border: 1px solid rgba(255,255,255,0.2);
     box-shadow: 0 0 60px rgba(255,0,200,0.25);
-}
+    margin-bottom: 35px;
+}}
 
-/* ===== Typography ===== */
-h1 {
-    font-size: 48px !important;
-    font-weight: 700 !important;
-    color: white !important;
-    text-align: center;
-}
+/* Neon animated border */
+.glass:hover {{
+    border: 1px solid transparent;
+    background-clip: padding-box;
+    position: relative;
+}}
 
-h2, h3, h4, p, label {
-    color: rgba(255,255,255,0.95) !important;
-}
+.glass:hover::before {{
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 30px;
+    padding: 2px;
+    background: linear-gradient(135deg, #ff00cc, #7928ca, #00f0ff);
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+}}
 
-/* ===== Inputs ===== */
+/* Inputs Glassy */
 .stTextInput input,
 .stNumberInput input,
 .stSelectbox > div > div,
-.stMultiSelect > div > div {
+.stMultiSelect > div > div {{
     background: rgba(255,255,255,0.1) !important;
+    border-radius: 20px !important;
+    border: 1px solid rgba(255,255,255,0.25) !important;
     color: white !important;
-    border-radius: 16px !important;
-    border: 1px solid rgba(255,255,255,0.2) !important;
-    padding: 10px !important;
-}
+}}
 
-/* ===== Premium Button ===== */
-.stButton > button {
-    background: linear-gradient(135deg, #ff0080, #7928ca);
+/* Button */
+.stButton > button {{
+    background: linear-gradient(135deg, #ff00cc, #7928ca);
     border-radius: 50px;
     padding: 14px 45px;
     border: none;
-    font-size: 16px;
     font-weight: 600;
     color: white;
-    box-shadow: 0 15px 35px rgba(255,0,200,0.4);
+    box-shadow: 0 15px 40px rgba(255,0,200,0.5);
     transition: 0.3s ease;
-}
+}}
 
-.stButton > button:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 45px rgba(255,0,200,0.6);
-}
+.stButton > button:hover {{
+    transform: translateY(-5px);
+    box-shadow: 0 20px 60px rgba(255,0,200,0.7);
+}}
+
+h1 {{
+    text-align: center;
+    font-size: 50px !important;
+    font-weight: 700 !important;
+    color: white !important;
+}}
+
+h2, h3, h4, p, label {{
+    color: white !important;
+}}
 
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("<h1>💪 FitPlan AI</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align:center;'>Train Smart. Look Sharp. Perform Better.</p>", unsafe_allow_html=True)
+# ------------------------------
+# HERO
+# ------------------------------
+st.markdown("<h1>💎 FitPlan AI Elite</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center;'>Train Smart. Perform Elite.</p>", unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
 
 col1, col2 = st.columns([1,1], gap="large")
 
+# ------------------------------
+# FORM
+# ------------------------------
 with col1:
     st.markdown('<div class="glass">', unsafe_allow_html=True)
 
-    st.subheader("👤 Personal Profile")
     name = st.text_input("Full Name")
     height_cm = st.number_input("Height (cm)", min_value=0.0)
     weight_kg = st.number_input("Weight (kg)", min_value=0.0)
-
-    st.subheader("🎯 Fitness Preferences")
 
     goal = st.selectbox("Goal",
         ["Build Muscle", "Weight Loss", "Strength Gain", "Abs Building", "Flexible"]
@@ -127,7 +172,9 @@ with col1:
 
     st.markdown('</div>', unsafe_allow_html=True)
 
-
+# ------------------------------
+# LOGIC
+# ------------------------------
 def calculate_bmi(height_cm, weight_kg):
     height_m = height_cm / 100
     return round(weight_kg / (height_m ** 2), 2)
@@ -142,42 +189,28 @@ def bmi_category(bmi):
     else:
         return "Obese"
 
-def generate_workout(goal, level):
-    plans = {
-        "Build Muscle": ["Barbell Squats", "Bench Press", "Pull-ups"],
-        "Weight Loss": ["HIIT Circuit", "Sprint Intervals", "Burpees"],
-        "Strength Gain": ["Deadlifts", "Weighted Pullups"],
-        "Abs Building": ["Plank Series", "Hanging Leg Raises"],
-        "Flexible": ["Yoga Flow", "Mobility Routine"]
-    }
-    workout = plans.get(goal, [])
-    if level == "Intermediate":
-        workout = [w + " 🔥" for w in workout]
-    elif level == "Advanced":
-        workout = [w + " 💎 Elite" for w in workout]
-    return workout
-
-
+# ------------------------------
+# RESULTS
+# ------------------------------
 with col2:
     if generate:
         if name.strip() == "" or height_cm <= 0 or weight_kg <= 0:
-            st.error("Please complete all fields properly.")
+            st.error("Please fill all fields properly.")
         else:
             bmi = calculate_bmi(height_cm, weight_kg)
             category = bmi_category(bmi)
 
-            st.markdown('<div class="result-glass">', unsafe_allow_html=True)
+            st.markdown('<div class="glass">', unsafe_allow_html=True)
 
-            st.markdown(f"### {name}")
+            st.subheader(f"{name}")
             st.markdown(f"## BMI: {bmi}")
             st.markdown(f"### Category: {category}")
 
-            st.markdown("<br>", unsafe_allow_html=True)
-            st.markdown("### 🏆 Recommended Plan")
-
-            for ex in generate_workout(goal, level):
-                st.markdown(f"- {ex}")
+            # Animated BMI Progress
+            progress = min(bmi / 40, 1.0)
+            bar = st.progress(0)
+            for i in range(int(progress * 100)):
+                time.sleep(0.01)
+                bar.progress(i + 1)
 
             st.markdown('</div>', unsafe_allow_html=True)
-
-            st.success("Elite consistency builds elite results. 💎")
