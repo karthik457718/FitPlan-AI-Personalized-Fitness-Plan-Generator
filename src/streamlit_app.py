@@ -13,7 +13,7 @@ html, body, [class*="css"] {
     font-family: 'Outfit', sans-serif;
 }
 
-/* ===== CINEMATIC GYM BACKGROUND (OPACITY REDUCED) ===== */
+/* ===== CINEMATIC GYM BACKGROUND (MORE VISIBLE) ===== */
 [data-testid="stAppViewContainer"] {
     background:
         linear-gradient(rgba(10,10,20,0.45), rgba(10,10,20,0.45)),
@@ -125,8 +125,22 @@ st.markdown("<p style='text-align:center;'>Train Smart. Perform Elite.</p>", uns
 
 # ===== FORM =====
 name = st.text_input("Full Name")
-height_cm = st.number_input("Height (cm)", min_value=0.0)
-weight_kg = st.number_input("Weight (kg)", min_value=0.0)
+
+height_cm = st.number_input(
+    "Height (cm)",
+    min_value=1,
+    value=170,
+    step=1,
+    format="%d"
+)
+
+weight_kg = st.number_input(
+    "Weight (kg)",
+    min_value=1,
+    value=70,
+    step=1,
+    format="%d"
+)
 
 goal = st.selectbox(
     "Goal",
@@ -204,8 +218,8 @@ def generate_workout(goal, level):
 
 # ===== RESULTS =====
 if generate:
-    if name.strip() == "" or height_cm <= 0 or weight_kg <= 0:
-        st.error("Please complete all fields properly.")
+    if name.strip() == "":
+        st.error("Please enter your name.")
     else:
         bmi = calculate_bmi(height_cm, weight_kg)
         category = bmi_category(bmi)
