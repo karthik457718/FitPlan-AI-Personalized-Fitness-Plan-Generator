@@ -133,50 +133,35 @@ h2, h3, h4, p, label {
     font-weight: 600;
     transition: 0.3s ease;
 }
-
 .stButton > button:hover {
     background: rgba(255,255,255,0.2);
     box-shadow: 0 0 40px rgba(255,0,200,0.5);
     transform: translateY(-3px);
 }
-
 </style>
 """, unsafe_allow_html=True)
-
-# HERO
 st.markdown("<h1>💎 FitPlan AI Elite</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align:center;'>Train Smart. Perform Elite.</p>", unsafe_allow_html=True)
 st.markdown('<div class="glow-bar"></div>', unsafe_allow_html=True)
-
-# FORM CARD
 st.markdown('<div class="glass">', unsafe_allow_html=True)
-
 name = st.text_input("Full Name")
 height_cm = st.number_input("Height (cm)", min_value=0.0)
 weight_kg = st.number_input("Weight (kg)", min_value=0.0)
-
 goal = st.selectbox("Goal",
     ["Build Muscle", "Weight Loss", "Strength Gain", "Abs Building", "Flexible"]
 )
-
 level = st.selectbox("Level",
     ["Beginner", "Intermediate", "Advanced"]
 )
-
 equipment = st.multiselect("Equipment",
     ["Dumbbells", "Resistance Band", "Yoga Mat", "No Equipment",
      "Bench", "Treadmill", "Cycle", "Pullup Bar"]
 )
-
 generate = st.button("Generate Elite Plan 🚀")
-
 st.markdown('</div>', unsafe_allow_html=True)
-
-# BMI Logic
 def calculate_bmi(height_cm, weight_kg):
     height_m = height_cm / 100
     return round(weight_kg / (height_m ** 2), 2)
-
 def bmi_category(bmi):
     if bmi < 18.5:
         return "Underweight"
@@ -186,25 +171,19 @@ def bmi_category(bmi):
         return "Overweight"
     else:
         return "Obese"
-
-# RESULTS
 if generate:
     if name.strip() == "" or height_cm <= 0 or weight_kg <= 0:
         st.error("Please complete all fields properly.")
     else:
         bmi = calculate_bmi(height_cm, weight_kg)
         category = bmi_category(bmi)
-
         st.markdown('<div class="glass">', unsafe_allow_html=True)
-
         st.subheader(name)
         st.markdown(f"## BMI: {bmi}")
         st.markdown(f"### Category: {category}")
-
         progress = min(bmi / 40, 1.0)
         bar = st.progress(0)
         for i in range(int(progress * 100)):
             time.sleep(0.01)
             bar.progress(i + 1)
-
         st.markdown('</div>', unsafe_allow_html=True)
