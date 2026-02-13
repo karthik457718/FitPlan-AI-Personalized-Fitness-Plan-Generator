@@ -3,15 +3,17 @@ import time
 
 st.set_page_config(page_title="FitPlan AI Elite", page_icon="💎", layout="wide")
 
-# ================== STYLING ==================
 st.markdown("""
 <style>
+
+/* ===== GOOGLE FONT ===== */
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap');
 
 html, body, [class*="css"] {
     font-family: 'Outfit', sans-serif;
 }
 
+/* ===== CINEMATIC GYM BACKGROUND ===== */
 [data-testid="stAppViewContainer"] {
     background:
         linear-gradient(rgba(10,10,20,0.75), rgba(10,10,20,0.75)),
@@ -21,38 +23,31 @@ html, body, [class*="css"] {
     background-attachment: fixed;
 }
 
+/* ===== CENTER LAYOUT ===== */
 .block-container {
     max-width: 850px;
     margin: auto;
     padding-top: 70px;
 }
 
+/* ===== TEXT COLORS ===== */
 h1, h2, h3, h4, p, label {
     color: white !important;
 }
 
-div[data-baseweb="input"] {
-    background: rgba(255,255,255,0.1) !important;
-    border-radius: 30px !important;
-    border: 1px solid rgba(255,255,255,0.35) !important;
-    backdrop-filter: blur(20px);
-}
-
-div[data-baseweb="input"] input {
-    background: transparent !important;
-    color: white !important;
-    border: none !important;
-}
-
+/* ===== GLASS INPUT STYLE ===== */
+.stTextInput > div > div,
+.stNumberInput > div > div,
 .stSelectbox > div > div,
 .stMultiSelect > div > div {
     background: rgba(255,255,255,0.1) !important;
     border-radius: 30px !important;
     border: 1px solid rgba(255,255,255,0.35) !important;
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(15px);
     color: white !important;
 }
 
+/* ===== GLASS BUTTON ===== */
 .stButton > button {
     background: rgba(255,255,255,0.12);
     border-radius: 40px;
@@ -60,19 +55,22 @@ div[data-baseweb="input"] input {
     border: 1px solid rgba(255,255,255,0.4);
     color: white;
     font-weight: 600;
+    transition: 0.3s ease;
 }
 
 .stButton > button:hover {
     box-shadow: 0 0 30px rgba(255,0,200,0.5);
+    transform: translateY(-2px);
 }
+
 </style>
 """, unsafe_allow_html=True)
 
-# ================== HERO ==================
+# ===== HERO =====
 st.markdown("<h1>💎 FitPlan AI Elite</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align:center;'>Train Smart. Perform Elite.</p>", unsafe_allow_html=True)
 
-# ================== FORM ==================
+# ===== FORM =====
 name = st.text_input("Full Name")
 height_cm = st.number_input("Height (cm)", min_value=0.0)
 weight_kg = st.number_input("Weight (kg)", min_value=0.0)
@@ -92,7 +90,7 @@ equipment = st.multiselect("Equipment",
 
 generate = st.button("Generate Elite Plan 🚀")
 
-# ================== BMI FUNCTIONS ==================
+# ===== BMI FUNCTIONS =====
 def calculate_bmi(height_cm, weight_kg):
     height_m = height_cm / 100
     return round(weight_kg / (height_m ** 2), 2)
@@ -107,7 +105,7 @@ def bmi_category(bmi):
     else:
         return "Obese"
 
-# ================== WORKOUT PLAN ==================
+# ===== WORKOUT GENERATOR =====
 def generate_workout(goal, level):
     plans = {
         "Weight Loss": [
@@ -118,7 +116,7 @@ def generate_workout(goal, level):
         ],
         "Build Muscle": [
             "Dumbbell Squats – 4x12",
-            "Incline Bench Press – 4x10",
+            "Bench Press – 4x10",
             "Pullups – 3x8",
             "Shoulder Press – 3x12"
         ],
@@ -148,7 +146,7 @@ def generate_workout(goal, level):
 
     return workout
 
-# ================== RESULTS ==================
+# ===== RESULTS =====
 if generate:
     if name.strip() == "" or height_cm <= 0 or weight_kg <= 0:
         st.error("Please complete all fields properly.")
@@ -175,6 +173,5 @@ if generate:
             st.markdown(f"✅ {exercise}")
 
         if equipment:
-            st.markdown("---")
-            st.markdown("### 🛠 Equipment You Selected:")
+            st.markdown("### 🛠 Equipment Selected:")
             st.write(", ".join(equipment))
