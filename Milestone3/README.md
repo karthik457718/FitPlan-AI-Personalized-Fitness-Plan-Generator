@@ -31,7 +31,7 @@ The project is organized into a modular structure to handle authentication, mult
 You can interact with the live version of this application on Hugging Face Spaces:
 
 **Hugging Face Live Link:** 
-(https://huggingface.co/spaces/Karthik71212/FIT_PLAN_B)
+https://huggingface.co/spaces/Karthik71212/FIT_PLAN_B
 
 ## Implementation Screenshots
 
